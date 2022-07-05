@@ -1,4 +1,4 @@
-# file_renamer
+# File Renamer
 Program description: Renames large numbers of files in a folder using a user-designated naming convention.
 Does not walk the directory tree.
 Includes input validation and error-checking.
