@@ -1,9 +1,8 @@
-''' File Renamer 1.0 by Antonios J. Bokas | https://smoothanalyst.com '''
+''' File Renamer 1.0 by Antonios J. Bokas | https://github.com/Antonios-J-Bokas '''
 
 ''' Notes '''
 
 # This program renames large numbers of files that all belong to the same group.
-# For example, a set of 200 photographs from the same photo shoot.
 
 ''' Imports '''
 
@@ -36,7 +35,7 @@ def get_folder():
 			# Check if directory is empty, if so, request new directory
 			if len(os.listdir(folder)) == 0:
 				time.sleep(.3)
-				if input('   Error: No files found in folder. Try another folder? (Y/N): ').lower() == 'n':
+				if input('   Error: No files found in folder. ''Try another folder? (Y/N): ').lower() == 'n':
 					print('   Process terminated.')
 					keep_going = False
 					return [False]
@@ -64,7 +63,7 @@ def get_ext():
 		if ext_missing == True:
 			time.sleep(.3)
 			print('   Error: No ' + str(ext).upper() + ' files found. '
-				  'Enter another extension. ')
+                            'Enter another extension. ')
 			continue
 
 	time.sleep(.3)
@@ -89,7 +88,8 @@ def rename_files():
 			count += 1
 	time.sleep(.3)
 	print('\n   Rename complete.',
-		  str(count - 1) + ' files renamed "' + series + '".')
+            str(count - 1) + ' files renamed "' + series + '".')
+	old_names.sort()
 	return old_names
 
 
@@ -107,17 +107,21 @@ def record_changes():
 		log = open(folder + '\\History\\Rename_History.txt', 'a')
 
 		# Write header and old names
-		log.write('>>> Time of report: ' + time.ctime()
-				  + '\n\nLocation: ' + str(folder)
-				  + '\n\nThe following files were renamed:\n')
+		log.write('>>> Time of report: ' + time.ctime() +
+				  '\n\nLocation: ' + str(folder) +
+                    '\n\nThe following files were renamed:\n')
 		for item in range(len(old_names)):
 			log.write('\n   ' + old_names[item])
 
 		# Write new names
 		log.write('\n\nNew file names:\n')
+		new_names = []
 		for file in os.listdir(folder):
 			if file.lower().endswith('.' + ext):
-				log.write('\n   ' + file)
+				new_names.append(file)
+		new_names.sort()
+		for item in range(len(new_names)):
+			log.write('\n   ' + new_names[item])
 
 		# Write footer and close log
 		log.write('\n\nEND OF REPORT\n\n')
@@ -141,14 +145,24 @@ print('FILE RENAMER 1.0 - Rename Multiple Files in a Folder\nby Antonios J. Boka
       '\n"property-1.txt" and "property-2.txt".'
       '\n----------------------------------------------------------------------')
 
-# Check if directory is valid and has files
-results = get_folder()
-if results[0] == True:
+while True:
 
-	# Request file type, rename files, and record changes
-	folder = results[1]
-	ext = get_ext()
-	old_names = rename_files()
-	record_changes()
+	# Check if directory is valid and has files
+	results = get_folder()
+	if results[0] == True:
+
+		# Request file type, rename files, and record changes
+		folder = results[1]
+		ext = get_ext()
+		old_names = rename_files()
+		record_changes()
+
+	again = input('\nRename files in another directory? (Y/N): ')
+	if again.lower() == 'y':
+		continue
+	else:
+		break
 
 quit = input('\nPress Enter to quit.')
+
+# os.path.split(os.path.dirname(your_full_filename))[-1]
