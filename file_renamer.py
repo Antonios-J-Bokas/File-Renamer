@@ -164,5 +164,3 @@ while True:
 		break
 
 quit = input('\nPress Enter to quit.')
-
-# os.path.split(os.path.dirname(your_full_filename))[-1]
